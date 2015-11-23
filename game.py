@@ -1,6 +1,7 @@
 import sys
 
 from .map import Labyrinth
+from constants import DIRECTIONS
 
 
 class Game(object):
@@ -30,7 +31,7 @@ class Game(object):
         direction = self.VALID_DIRECTIONS.intersection(set(cmd))
 
         if direction and len(direction) == 1:
-            return direction[0]
+            return DIRECTIONS.get(direction[0])
 
         return False
 
@@ -38,13 +39,8 @@ class Game(object):
         sys.stdout.write(message)
 
     def next_adventure(self, direction):
-        msg = self.get_next_dest(direction)
-        self.show_message(msg)
-
-    def get_next_dest(self, cmd):
-        #TODO: talk to lab
-
-        return 1
+        current_room = self.lab.move_player(direction)
+        self.show_message(current_room.make_description())
 
 
 if __name__ == '__main__':
