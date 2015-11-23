@@ -22,6 +22,7 @@ class Monster(object):
 
         self.history.append(move)
         self.last_move = move
+        return move
 
     def move(self, new_room, can_hear_player):
         if new_room == self.room:
