@@ -98,6 +98,10 @@ class Labyrinth(object):
           for i in range(self.width):
             if SOUTH not in self.layout[i][j].doors:
               result += '_'
+            elif (i,j) == self.player_location:
+              result += 'p'
+            elif (i,j) == self.monster_location:
+              result += 'm'
             else:
               result += ' '
             if EAST not in self.layout[i][j].doors:
