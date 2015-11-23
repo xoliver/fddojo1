@@ -5,6 +5,7 @@ from constants import (
     NORTH, SOUTH, EAST, WEST, DIRECTIONS,
     SOUND_THRESHOLD,
 )
+from monster import Monster
 
 
 def distance(one, other):
@@ -30,6 +31,7 @@ class Labyrinth(object):
     layout = None
     width = None
     height = None
+    monster = Monster()
 
     def __getitem__(self, key):
         x, y = key
@@ -109,15 +111,36 @@ class Labyrinth(object):
         x, y = self.player_location
         return self.layout[x][y]
 
-    def move_player(self, direction):
+    def get_current_monster_room(self):
+        x, y = self.monster_location
+        return self.layout[x][y]
+
+    def _move_player(self, direction):
         current_room = self.get_current_player_room()
         print current_room.make_description()
         if direction not in current_room.doors:
             print "You cannot move in this direction"
-            return current_room
         else:
             current_x, current_y = self.player_location
             change_x, change_y = DIRECTIONS[direction]
             self.player_location = current_x + change_x, current_y + change_y
             print "You moved {}.".format(direction)
-            return self.get_current_player_room()
+    
+    def _move_monster(self):
+        direction = monster.get_move()
+        current_room = self.get_current_monster_room()
+        if direction in current_room.doors:
+            current_x, current_y = self.monster_location
+            change_x, change_y = DIRECTIONS[direction]
+            self.monster_location = current_x + change_x, current_y + change_y
+
+    def _check_condition(self):
+        if self.player_location == self.monster_location:
+            print "You have been eaten by a grue."
+            raise Exception("Grue")
+
+    def move_player(self, direction):
+        self._move_player(direction)
+        self._move_monster()
+        self._check_condition()
+        return self.get_current_player_room()
