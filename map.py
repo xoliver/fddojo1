@@ -9,13 +9,12 @@ DIRECTIONS = {
 class Room(object):
     doors = []
 
-    def __init__(self):
-        pass
-
     def make_description(self):
-        description = "You are in a room./n"
-        for direction in doors:
-            description += "There is a door to the ()\n".format(door)
+        description = "You are in a room.\n"
+        for direction in self.doors:
+            description += "There is a door to the {}\n".format(direction)
+
+        return description
 
 
 class Labyrinth(object):
@@ -24,6 +23,10 @@ class Labyrinth(object):
     layout = None
     width = None
     height = None
+
+    def __getitem__(self,key):
+        x, y = key
+        return self.layout[x][y]
 
     def __init__(self, width, height):
         self.width = width
@@ -42,12 +45,13 @@ class Labyrinth(object):
         # Remove the doors in the outer walls
         for room in layout[0]:
             room.doors.remove("north")
-        for inner_row in layout[1:height-1]:
+        for inner_row in layout:
             inner_row[0].doors.remove("west")
             inner_row[-1].doors.remove("east")
         for room in layout[-1]:
             room.doors.remove("south")
 
+        layout[2][2].doors.remove("south")
         self.layout = layout
 
     def text_map(self):
