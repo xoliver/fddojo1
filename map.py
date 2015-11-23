@@ -1,6 +1,7 @@
 from constants import (
-    NORTH, SOUTH, EAST, WEST,
+    NORTH, SOUTH, EAST, WEST, DIRECTIONS
 )
+from random import randint
 
 
 class Room(object):
@@ -30,26 +31,31 @@ class Labyrinth(object):
         self.height = height
 
         layout = []
-        for _ in range(self.height):
+        for _ in range(self.width):
             # To start out, just do a "maze" with doors between all rooms.
             row = []
-            for _ in range(self.width):
+            for _ in range(self.height):
                 room = Room()
-                room.doors = MOVES
+                room.doors = [NORTH, SOUTH, EAST, WEST]
                 row.append(room)
             layout.append(row)
 
         # Remove the doors in the outer walls
         for room in layout[0]:
-            room.doors.remove(NORTH)
-        for inner_row in layout:
-            inner_row[0].doors.remove(WEST)
-            inner_row[-1].doors.remove(EAST)
+            room.doors.remove(WEST)
+        for inner_column in layout:
+            inner_column[0].doors.remove(SOUTH)
+            inner_column[-1].doors.remove(NORTH)
         for room in layout[-1]:
-            room.doors.remove(SOUTH)
+            room.doors.remove(EAST)
 
-        layout[2][2].doors.remove(SOUTH)
         self.layout = layout
+
+        self.player_location = self.get_random_location()
+        self.monster_location = self.get_random_location()
+
+    def get_random_location(self):
+        return randint(0, self.width-1), randint(0, self.height-1)
 
     def text_map(self):
         """
@@ -61,15 +67,15 @@ class Labyrinth(object):
         result = '.' + self.width*'_.'
         result += '\n'
 
-        for i in range(self.height):
+        for j in range(self.height-1, -1, -1):
           result += '|'
 
-          for j in range(self.width):
-            if i==self.height-1 or SOUTH not in self.layout[i][j].doors:
+          for i in range(self.width):
+            if SOUTH not in self.layout[i][j].doors:
               result += '_'
             else:
               result += ' '
-            if j==self.width-1 or EAST not in self.layout[i][j].doors:
+            if EAST not in self.layout[i][j].doors:
               result += '|'
             else:
               result += '.'
@@ -77,3 +83,21 @@ class Labyrinth(object):
           result += '\n'
 
         return result
+
+    def get_current_player_room(self):
+        x, y = self.player_location
+        return self.layout[x][y]
+
+    def move_player(self, direction):
+        current_room = self.get_current_player_room()
+        print current_room.make_description()
+        if direction not in current_room.doors:
+            print "You cannot move in this direction"
+            return current_room
+        else:
+            current_x, current_y = self.player_location
+            change_x, change_y = DIRECTIONS[direction]
+            self.player_location = current_x + change_x, current_y + change_y
+            print "You moved {}.".format(direction)
+            return self.get_current_player_room()
+
