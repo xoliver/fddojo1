@@ -1,26 +1,21 @@
 import random
 
-MOVES = {
-    'N': 'S',
-    'S': 'N',
-    'E': 'W',
-    'W': 'E',
-}
+from constants import MOVES
 
 
 class Monster(object):
 
     def __init__(self):
         self.room = None
-        self.failed_last_move = False
+        self.last_move_failed = False
         self.history = []
         self.last_move = None
 
-    def action(self):
+    def get_move(self):
         while True:
-            move = random.choice(MOVES)
+            move = random.choice(MOVES.keys())
 
-            if self.failed_last_move and move == self.last_move:
+            if self.last_move_failed and move == self.last_move:
                 continue
             else:
                 break
@@ -28,6 +23,8 @@ class Monster(object):
         self.history.append(move)
         self.last_move = move
 
-    def result(self, success, room):
-        self.failed_last_move = not success
-        self.room = room
+    def move(self, new_room):
+        if new_room == self.room:
+            self.last_move_failed = True
+        else:
+            self.room = new_room
