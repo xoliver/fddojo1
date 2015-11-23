@@ -31,7 +31,7 @@ class Game(object):
         direction = self.VALID_DIRECTIONS.intersection(set(cmd))
 
         if direction and len(direction) == 1:
-            return DIRECTIONS.get(direction[0])
+            return DIRECTIONS.get(direction.pop())
 
         return False
 
