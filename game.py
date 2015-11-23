@@ -7,6 +7,7 @@ class Game(object):
     MSG = 'This is a Labyrinth game'
     INVALID_MSG = 'Please give the direction.'
     SIZE = (10, 10, )
+    VALID_DIRECTIONS = set(['west', 'east', 'north', 'south'])
 
     def __init__(self):
         width, height = self.SIZE
@@ -16,15 +17,21 @@ class Game(object):
         self.show_message(self.MSG)
 
         while True:
-            cmd = raw_input().lower()
+            cmd = raw_input().lower().split()
 
-            if not self.validate_command(cmd):
+            if not self.get_direction(cmd):
                 self.show_message(self.INVALID_MSG)
             else:
                 self.next_adventure(cmd)
 
-    def validate_command(self):
-        pass
+    def get_direction(self, cmd):
+
+        direction = self.VALID_DIRECTIONS.intersection(set(cmd))
+
+        if direction and len(direction) == 1:
+            return direction[0]
+
+        return False
 
     def show_message(self, message):
         sys.stdout.write(message)
