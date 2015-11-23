@@ -19,3 +19,5 @@ if __name__ == '__main__':
             print 'CANNOT UNDERSTAND COMMAND OR DIRECTION'
 
         room = lab.move_player(direction)
+
+        print lab.text_map()

@@ -159,7 +159,6 @@ class Labyrinth(object):
             raise Exception("Grue")
 
     def move_player(self, direction):
-        print self.player_location, self.monster_location
         self._move_player(direction)
         self._move_monster()
         self._check_condition()
