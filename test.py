@@ -4,8 +4,10 @@ from map import Labyrinth
 
 if __name__ == '__main__':
     lab = Labyrinth(10, 10)
+    print 'You are somewhere...\n'
 
     while True:
+        print '>', 
         line = raw_input().lower()
         try:
             cmd, direction = line.split(' ')
