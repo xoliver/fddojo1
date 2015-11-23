@@ -1,9 +1,9 @@
 from math import sqrt
-from random import randint
+from random import choice, random, randint
 
 from constants import (
     NORTH, SOUTH, EAST, WEST, DIRECTIONS,
-    SOUND_THRESHOLD,
+    SOUND_THRESHOLD, OPPOSITE_MOVES
 )
 from monster import Monster
 
@@ -62,10 +62,23 @@ class Labyrinth(object):
 
         self.layout = layout
 
+        self._remove_random_doors()
+
         self.player_location = self.get_random_location()
         self.monster_location = self.get_random_location()
 
         self.monster = Monster()
+
+    def _remove_random_doors(self):
+        for x, column in enumerate(self.layout):
+            for y, room in enumerate(column):
+                if randint(0,10) < 5:
+                    # Remove a door at random
+                    door = choice(room.doors)
+                    room.doors.remove(door)
+                    change_x, change_y = DIRECTIONS[door]
+                    new_x, new_y = x+change_x, y+change_y
+                    self.layout[new_x][new_y].doors.remove(OPPOSITE_MOVES[door])
 
     def get_random_location(self):
         return randint(0, self.width-1), randint(0, self.height-1)
