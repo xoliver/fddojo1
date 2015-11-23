@@ -19,13 +19,14 @@ class Game(object):
         while True:
             cmd = raw_input().lower().split()
 
-            if not self.get_direction(cmd):
+            direction = self.get_direction(cmd)
+
+            if not direction:
                 self.show_message(self.INVALID_MSG)
             else:
-                self.next_adventure(cmd)
+                self.next_adventure(direction)
 
     def get_direction(self, cmd):
-
         direction = self.VALID_DIRECTIONS.intersection(set(cmd))
 
         if direction and len(direction) == 1:
@@ -36,8 +37,8 @@ class Game(object):
     def show_message(self, message):
         sys.stdout.write(message)
 
-    def next_adventure(self, cmd):
-        msg = self.get_next_dest(cmd)
+    def next_adventure(self, direction):
+        msg = self.get_next_dest(direction)
         self.show_message(msg)
 
     def get_next_dest(self, cmd):
