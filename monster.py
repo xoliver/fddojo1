@@ -17,7 +17,7 @@ class Monster(object):
             move = self.last_move
         else:
             while True:
-                move = random.choice(MOVES.keys())
+                move = random.choice(MOVES)
 
                 if self.last_move_failed and move == self.last_move:
                     continue

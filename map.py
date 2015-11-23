@@ -31,7 +31,7 @@ class Labyrinth(object):
     layout = None
     width = None
     height = None
-    monster = Monster()
+    monster = None
 
     def __getitem__(self, key):
         x, y = key
@@ -64,6 +64,8 @@ class Labyrinth(object):
 
         self.player_location = self.get_random_location()
         self.monster_location = self.get_random_location()
+
+        self.monster = Monster()
 
     def get_random_location(self):
         return randint(0, self.width-1), randint(0, self.height-1)
@@ -127,7 +129,7 @@ class Labyrinth(object):
             print "You moved {}.".format(direction)
     
     def _move_monster(self):
-        direction = monster.get_move()
+        direction = self.monster.get_move()
         current_room = self.get_current_monster_room()
         if direction in current_room.doors:
             current_x, current_y = self.monster_location
