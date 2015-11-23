@@ -1,12 +1,14 @@
 import sys
 
+from .map import Labyrinth
+
 
 class Game(object):
     MSG = ''
     INVALID_MSG = ''
 
-    def __init__(self, game_book):
-        self.game_book = game_book
+    def __init__(self):
+        self.game_book = None
 
     def start(self):
         self.show_message(self.MSG)
@@ -17,8 +19,8 @@ class Game(object):
             if not self.validate_command(cmd):
                 self.show_message(self.INVALID_MSG)
                 self.show_message(self.MSG)
-
-            self.next_adventure(cmd)
+            else:
+                self.next_adventure(cmd)
 
     def validate_command(self):
         pass
