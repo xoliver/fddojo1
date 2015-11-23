@@ -42,9 +42,7 @@ class Game(object):
         sys.stdout.write(message)
 
     def next_adventure(self, direction):
-        current_room = self.lab.move_player(direction)
-        self.show_message(current_room.make_description())
-
+        self.lab.move_player(direction)
 
 if __name__ == '__main__':
     game_book = object()
