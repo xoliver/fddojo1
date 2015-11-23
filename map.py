@@ -1,10 +1,16 @@
 from math import sqrt
+from random import randint
 
 from constants import (
     NORTH, SOUTH, EAST, WEST, DIRECTIONS,
     SOUND_THRESHOLD,
 )
-from random import randint
+
+
+def distance(one, other):
+    return sqrt(
+        (one[0] - other[0]) ** 2 + (one[1] - other[1] ** 2)
+    )
 
 
 class Room(object):
@@ -61,22 +67,16 @@ class Labyrinth(object):
         return randint(0, self.width-1), randint(0, self.height-1)
 
     def player_hears(self):
-        return self._calculate_sound(
+        distance = distance(
             self.monster_location, self.player_location
         )
+        return distance < SOUND_THRESHOLD
 
     def monster_hears(self):
-        return self._calculate_sound(
+        distance = distance(
             self.player_location, self.monster_location
         )
-
-    def _calculate_sound(self, other, listener):
-        distance = sqrt(
-            (other[0] - listener[0]) ** 2 + (other[1] - listener[1] ** 2)
-        )
-
-        if distance > SOUND_THRESHOLD:
-            return distance
+        return distance < SOUND_THRESHOLD * 1.5
 
     def text_map(self):
         """

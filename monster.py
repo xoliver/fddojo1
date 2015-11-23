@@ -23,8 +23,9 @@ class Monster(object):
         self.history.append(move)
         self.last_move = move
 
-    def move(self, new_room):
+    def move(self, new_room, can_hear_player):
         if new_room == self.room:
             self.last_move_failed = True
+            return
         else:
             self.room = new_room
