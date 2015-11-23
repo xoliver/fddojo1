@@ -6,9 +6,11 @@ from .map import Labyrinth
 class Game(object):
     MSG = ''
     INVALID_MSG = ''
+    SIZE = (10, 10)
 
     def __init__(self):
-        self.game_book = None
+        width, height = self.SIZE
+        self.lab = Labyrinth(width, height)
 
     def start(self):
         self.show_message(self.MSG)
@@ -33,7 +35,7 @@ class Game(object):
         self.show_message(msg)
 
     def get_next_dest(self, cmd):
-        #TODO: talk to game_book
+        #TODO: talk to lab
 
         return 1
 
