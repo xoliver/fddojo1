@@ -1,11 +1,11 @@
 import sys
 
-from .map import Labyrinth
-from constants import DIRECTIONS
+from map import Labyrinth
+from constants import DIRECTIONS, MOVES
 
 
 class Game(object):
-    MSG = 'This is a Labyrinth game'
+    MSG = 'This is a Labyrinth game\n'
     INVALID_MSG = 'Please give the direction.'
     SIZE = (10, 10, )
     VALID_DIRECTIONS = set(['west', 'east', 'north', 'south'])
@@ -18,22 +18,25 @@ class Game(object):
         self.show_message(self.MSG)
 
         while True:
-            cmd = raw_input().lower().split()
+            line = raw_input().lower()
+            try:
+                cmd, direction = line.split(' ')
+            except:
+                print 'NO IDEA WHAT YOU SAID'
+                continue
 
-            direction = self.get_direction(cmd)
+            if cmd != 'go' and direction not in MOVES:
+                print 'CANNOT UNDERSTAND COMMAND OR DIRECTION'
 
-            if not direction:
-                self.show_message(self.INVALID_MSG)
-            else:
-                self.next_adventure(direction)
-
-    def get_direction(self, cmd):
-        direction = self.VALID_DIRECTIONS.intersection(set(cmd))
-
-        if direction and len(direction) == 1:
-            return DIRECTIONS.get(direction.pop())
-
-        return False
+            self.next_adventure(direction)
+    #
+    # def get_direction(self, line):
+    #     direction = self.VALID_DIRECTIONS.intersection(set(cmd))
+    #
+    #     if direction and len(direction) == 1:
+    #         return DIRECTIONS.get(direction.pop())
+    #
+    #     return False
 
     def show_message(self, message):
         sys.stdout.write(message)
@@ -46,5 +49,5 @@ class Game(object):
 if __name__ == '__main__':
     game_book = object()
 
-    game = Game(game_book)
+    game = Game()
     game.start()
