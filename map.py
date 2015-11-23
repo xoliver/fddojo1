@@ -1,9 +1,6 @@
-DIRECTIONS = {
-    "north": (0, 1),
-    "west": (-1, 0),
-    "south": (0, -1),
-    "east": (1, 0)
-}
+from constants import (
+    NORTH, SOUTH, EAST, WEST,
+)
 
 
 class Room(object):
@@ -38,20 +35,20 @@ class Labyrinth(object):
             row = []
             for _ in range(self.width):
                 room = Room()
-                room.doors = ["north", "south", "east", "west"]
+                room.doors = MOVES
                 row.append(room)
             layout.append(row)
 
         # Remove the doors in the outer walls
         for room in layout[0]:
-            room.doors.remove("north")
+            room.doors.remove(NORTH)
         for inner_row in layout:
-            inner_row[0].doors.remove("west")
-            inner_row[-1].doors.remove("east")
+            inner_row[0].doors.remove(WEST)
+            inner_row[-1].doors.remove(EAST)
         for room in layout[-1]:
-            room.doors.remove("south")
+            room.doors.remove(SOUTH)
 
-        layout[2][2].doors.remove("south")
+        layout[2][2].doors.remove(SOUTH)
         self.layout = layout
 
     def text_map(self):
@@ -68,11 +65,11 @@ class Labyrinth(object):
           result += '|'
 
           for j in range(self.width):
-            if i==self.height-1 or "south" not in self.layout[i][j].doors:
+            if i==self.height-1 or SOUTH not in self.layout[i][j].doors:
               result += '_'
             else:
               result += ' '
-            if j==self.width-1 or "east" not in self.layout[i][j].doors:
+            if j==self.width-1 or EAST not in self.layout[i][j].doors:
               result += '|'
             else:
               result += '.'
