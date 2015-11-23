@@ -18,7 +18,7 @@ class Monster(object):
 
     def action(self):
         while True:
-            move = random.choice(MOVES)
+            move = random.choice(MOVES.keys())
 
             if self.failed_last_move and move == self.last_move:
                 continue
@@ -28,6 +28,8 @@ class Monster(object):
         self.history.append(move)
         self.last_move = move
 
-    def result(self, success, room):
-        self.failed_last_move = not success
-        self.room = room
+    def result(self, new_room):
+        if new_room == self.room:
+            self.failed_last_move = True
+        else:
+            self.room = new_room
