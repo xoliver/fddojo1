@@ -4,9 +4,9 @@ from .map import Labyrinth
 
 
 class Game(object):
-    MSG = ''
-    INVALID_MSG = ''
-    SIZE = (10, 10)
+    MSG = 'This is a Labyrinth game'
+    INVALID_MSG = 'Please give the direction.'
+    SIZE = (10, 10, )
 
     def __init__(self):
         width, height = self.SIZE
@@ -20,7 +20,6 @@ class Game(object):
 
             if not self.validate_command(cmd):
                 self.show_message(self.INVALID_MSG)
-                self.show_message(self.MSG)
             else:
                 self.next_adventure(cmd)
 
