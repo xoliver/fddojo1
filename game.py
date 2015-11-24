@@ -29,6 +29,7 @@ class Game(object):
                 print 'CANNOT UNDERSTAND COMMAND OR DIRECTION'
 
             self.next_adventure(direction)
+            print self.lab.text_map()
     #
     # def get_direction(self, line):
     #     direction = self.VALID_DIRECTIONS.intersection(set(cmd))
